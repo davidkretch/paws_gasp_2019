@@ -35,7 +35,7 @@ variables or in a shared credentials file. See
 
 ## 2. Make a Docker container
 
-Your batch job runs in a Docker container, which a self-contained environment 
+Your batch job runs in a Docker container, which is a self-contained environment 
 with an OS and other software, such as R. The example in this repo uses a
 pre-built Docker container with R installed, which is hosted on Docker Hub.
 

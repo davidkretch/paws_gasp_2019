@@ -3,7 +3,7 @@
 This presentation shows how you can use Amazon Web Services (AWS) in R with
 the Paws package. The Paws package provides access to 150+ services on AWS.
 
-One use case is to run large, complex analyses on a dedicated server. The 
+One use case is to run large, complex analyses on dedicated servers. The 
 example code here runs an R script on a large server which starts on command
 and stops when done using AWS Batch.
 

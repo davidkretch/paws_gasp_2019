@@ -61,7 +61,7 @@ bucket, then runs an AWS Batch job which fetches the R script and runs it.
 
 ## Other resources
 
-`install.packages("paws")` - install Paws from CRAN.
+`install.packages("paws")` - install Paws from [CRAN](https://cran.r-project.org/package=paws).
 
 [Paws home page](https://paws-r.github.io) - See online documentation.
 

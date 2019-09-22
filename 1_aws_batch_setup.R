@@ -7,7 +7,7 @@ source("0_helpers.R")
 
 
 #-------------------------------------------------------------------------------
-# Create IAM roles for Batch.
+# Create Identity & Access Management (IAM) roles for Batch.
 
 # Service role for AWS Batch.
 # AWS will create this role for you if you use the management console wizard.

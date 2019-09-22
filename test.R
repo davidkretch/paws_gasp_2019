@@ -1,1 +1,1 @@
-print(parallel::detectCores())
+print(paste("Number of cores:", parallel::detectCores()))

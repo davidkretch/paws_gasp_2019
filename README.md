@@ -37,7 +37,7 @@ variables or in a shared credentials file. See
 
 Your batch job runs in a Docker container, which a self-contained environment 
 with an OS and other software, such as R. The example in this repo uses a
-pre-built Docker container with has R installed, which is hosted on Docker Hub.
+pre-built Docker container with R installed, which is hosted on Docker Hub.
 
 You can make your own Docker container using the Dockerfile in the `docker`
 folder. The 

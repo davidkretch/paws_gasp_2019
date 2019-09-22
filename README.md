@@ -48,7 +48,7 @@ blog post shows how to do that.
 ## 3. Set up AWS Batch
 
 To use Batch, you must set up a compute environment (e.g. max CPUs), a job queue, 
-and a job definition (e.g. what container to use). See [the user guide](https://docs.aws.amazon.com/batch/latest/userguide/what-is-batch.html) for more info.
+and a job definition (e.g. what container to use). See [the Batch user guide](https://docs.aws.amazon.com/batch/latest/userguide/what-is-batch.html) for more info about what each of these is for.
 
 The script `1_aws_batch_setup.R` will create these for you.
 

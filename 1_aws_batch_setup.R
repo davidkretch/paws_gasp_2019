@@ -3,64 +3,35 @@
 # Based on 'Creating a Simple "Fetch & Run" AWS Batch Job'
 # https://aws.amazon.com/blogs/compute/creating-a-simple-fetch-and-run-aws-batch-job/
 
-#-------------------------------------------------------------------------------
-# Get the default networking info to set up the Batch compute environment.
-
-ec2 <- paws::ec2()
-
-default_vpc <- ec2$describe_vpcs(
-  Filters = "isDefault=true"
-)$Vpcs[[1]]
-
-security_group <- ec2$describe_security_groups(
-  Filters = sprintf("vpc-id=%s", default_vpc$VpcId),
-  GroupNames = "default"
-)$SecurityGroups[[1]]
-
-subnets <- ec2$describe_subnets(
-  Filters = sprintf("vpc-id=%s", default_vpc$VpcId)
-)$Subnets
+source("0_helpers.R")
 
 
 #-------------------------------------------------------------------------------
-# Create an IAM role for Batch.
+# Create IAM roles for Batch.
 
-role_name <- "AWSBatchServiceRole"
-policy_arn <- "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"
-
-trust_policy <- list(
-  Version = "2012-10-17",
-  Statement = list(
-    list(
-      Effect = "Allow",
-      Principal = list(
-        Service = "batch.amazonaws.com"
-      ),
-      Action = "sts:AssumeRole"
-    )
-  )
+# Service role for AWS Batch.
+# AWS will create this role for you if you use the management console wizard.
+service_role <- create_or_get_role(
+  name = "AWSBatchServiceRole",
+  service = "batch",
+  policy = "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"
 )
 
-iam <- paws::iam()
-
-if (role_name %in% sapply(iam$list_roles()$Roles, function(x) x$RoleName)) {
-  role <- iam$get_role(role_name)
-} else {
-  role <- iam$create_role(
-    RoleName = role_name,
-    AssumeRolePolicyDocument = jsonlite::toJSON(trust_policy, auto_unbox = TRUE)
-  )
-  iam$attach_role_policy(
-    RoleName = role_name,
-    PolicyArn = policy_arn
-  )
-}
+# Role for Elastic Container Service running on EC2.
+# AWS will create this role for you if you use the management console wizard.
+instance_role <- create_or_get_role(
+  name = "ecsInstanceRole",
+  service = "ec2",
+  policy = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+)
 
 
 #-------------------------------------------------------------------------------
 # Create the Batch compute environment, job queue, and job definition.
 
 batch <- paws::batch()
+
+ec2_info <- get_ec2_info()
 
 # The compute environment: the resources on which Batch jobs will run.
 batch$create_compute_environment(
@@ -74,10 +45,10 @@ batch$create_compute_environment(
     instanceTypes = "optimal",
     maxvCpus = 128L,
     minvCpus = 0L,
-    securityGroupIds = security_group$GroupId,
-    subnets = sapply(subnets, function(x) x$SubnetId)
+    securityGroupIds = ec2_info$security_group,
+    subnets = ec2_info$subnets
   ),
-  serviceRole = role$Role$Arn,
+  serviceRole = service_role$Role$Arn,
   state = "ENABLED"
 )
 
@@ -94,19 +65,25 @@ batch$create_job_queue(
   state = "ENABLED"
 )
 
+
 #-------------------------------------------------------------------------------
 # Create the fetch & run job definition.
+# A job definition specifies a Docker container that will run a batch process.
 
-# TODO: Create the IAM role.
-role <- iam$get_role("ecs_fetch_and_run")
+job_role <- create_or_get_role(
+  name = "ecs_fetch_and_run",
+  service = "ecs-tasks",
+  policy = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+)
 
+# This job definition uses a Docker container retrieved from Docker Hub.
 job_def <- batch$register_job_definition(
   type = "container",
   containerProperties = list(
-    image = "davidkretch/fetch_and_run",
+    image = "davidkretch/fetch_and_run", # from Docker Hub
     vcpus = 1L,
     memory = 128L,
-    jobRoleArn = role$Role$Arn
+    jobRoleArn = job_role$Role$Arn
   ),
   jobDefinitionName = "fetch_and_run"
 )

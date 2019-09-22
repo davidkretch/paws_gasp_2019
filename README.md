@@ -16,9 +16,9 @@ Programming (GASP!) conference, held on September 23, 2019 in Washington DC.
 
 ## Summary
 
-1. Install Paws.
-2. Make a Docker container.
-3. Set up AWS Batch.
+1. Install Paws
+2. Make a Docker container (optional)
+3. Set up AWS Batch
 4. Run an R job on Batch!
 
 ## 1. Install Paws

@@ -7,7 +7,8 @@ One use case is to run large, complex analyses on a dedicated server. The
 example code here runs an R script on a large server which starts on command
 and stops when done using AWS Batch.
 
-The example is based on [Creating a Simple "Fetch & Run" AWS Batch Job](https://aws.amazon.com/blogs/compute/creating-a-simple-fetch-and-run-aws-batch-job/)
+The example is based on the 
+[Creating a Simple "Fetch & Run" AWS Batch Job](https://aws.amazon.com/blogs/compute/creating-a-simple-fetch-and-run-aws-batch-job/)
 blog post written by Amazon.
 
 This presentation was prepared for the Government Advances in Statistical
@@ -29,7 +30,8 @@ cURL, OpenSSL, and libxml2. In Debian/Ubuntu, install `libcurl4-openssl-dev`,
 `libssl-dev`, and `libxml2-dev`.
 
 The example also assumes that you have AWS credentials saved in OS environment
-variables or in a shared credentials file. See [this document](https://github.com/paws-r/paws/blob/master/docs/credentials.md) for more info on authenticating with AWS.
+variables or in a shared credentials file. See 
+[this document](https://github.com/paws-r/paws/blob/master/docs/credentials.md) for more info on authenticating with AWS.
 
 ## 2. Make a Docker container
 
@@ -38,16 +40,14 @@ with an OS and other software, such as R. The example in this repo uses a
 pre-built Docker container with has R installed, which is hosted on Docker Hub.
 
 You can make your own Docker container using the Dockerfile in the `docker`
-folder. The [Creating a Simple "Fetch & Run" AWS Batch Job](https://aws.amazon.com/blogs/compute/creating-a-simple-fetch-and-run-aws-batch-job/) blog post shows
-how to do that.
+folder. The 
+[Creating a Simple "Fetch & Run" AWS Batch Job](https://aws.amazon.com/blogs/compute/creating-a-simple-fetch-and-run-aws-batch-job/) 
+blog post shows how to do that.
 
 ## 3. Set up AWS Batch
 
-To use Batch, you must set up:
-1. A compute environment, configuration for the AWS resources jobs will run on
-   (e.g. max CPUs) 
-2. A job queue, a queue for submitted jobs
-3. A job definition, configuration for the container you want to use
+To use Batch, you must set up a compute environment (e.g. max CPUs), a job queue, 
+and a job definition (e.g. what container to use). See [the user guide](https://docs.aws.amazon.com/batch/latest/userguide/what-is-batch.html) for more info.
 
 The script `1_aws_batch_setup.R` will create these for you.
 

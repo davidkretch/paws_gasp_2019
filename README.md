@@ -5,7 +5,7 @@ the Paws package. The Paws package provides access to 150+ services on AWS.
 
 One use case is to run large, complex analyses on dedicated servers. The 
 example code here runs an R script on a large server which starts on command
-and stops when done using AWS Batch.
+and stops when done, using AWS Batch.
 
 The example is based on the 
 [Creating a Simple "Fetch & Run" AWS Batch Job](https://aws.amazon.com/blogs/compute/creating-a-simple-fetch-and-run-aws-batch-job/)
@@ -54,7 +54,7 @@ The script `1_aws_batch_setup.R` will create these for you.
 
 You can also follow the instructions in [Creating a Simple "Fetch & Run" AWS Batch Job](https://aws.amazon.com/blogs/compute/creating-a-simple-fetch-and-run-aws-batch-job/).
 
-## Run an R job on Batch
+## 4. Run an R job on Batch
 
 The example in `2_run_batch_job.R` copies an R script to an S3 file storage
 bucket, then runs an AWS Batch job which fetches the R script and runs it.

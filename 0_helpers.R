@@ -55,7 +55,7 @@ trust_policy <- function(service) {
       list(
         Effect = "Allow",
         Principal = list(
-          Service = sprintf("%s.amazonaws.com")
+          Service = sprintf("%s.amazonaws.com", service)
         ),
         Action = "sts:AssumeRole"
       )

@@ -63,3 +63,12 @@ trust_policy <- function(service) {
   )
 }
 
+create_or_get_instance_profile <- function(name) {
+  iam <- paws::iam()
+  exists <- name %in% sapply(iam$list_instance_profiles()$InstanceProfiles, function(x) x$InstanceProfileName)
+  if (exists) {
+    return(iam$get_instance_profile(name))
+  }
+  iam$create_instance_profile(name)
+  iam$add_role_to_instance_profile(name, name)
+}

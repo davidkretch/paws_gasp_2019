@@ -25,6 +25,8 @@ instance_role <- create_or_get_role(
   policy = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 )
 
+instance_profile <- create_or_get_instance_profile("ecsInstanceRole")
+
 
 #-------------------------------------------------------------------------------
 # Create the Batch compute environment, job queue, and job definition.
